@@ -1,5 +1,6 @@
 package co.elastic.logstash.api;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +84,28 @@ public final class PluginConfigSpec<T> {
         return new PluginConfigSpec<>(name, Codec.class, defaultValue, deprecated, required);
     }
 
+    public static PluginConfigSpec<URI> uriSetting(final String name) {
+        return new PluginConfigSpec<>(
+                name, URI.class, null, false, false
+        );
+    }
+
+    public static PluginConfigSpec<URI> uriSetting(final String name, final String defaultUri) {
+        PluginConfigSpec<URI> pcs = new PluginConfigSpec<>(
+                name, URI.class, null, false, false
+        );
+        pcs.rawDefaultValue = defaultUri;
+        return pcs;
+    }
+
+    public static PluginConfigSpec<URI> uriSetting(final String name, final String defaultUri, boolean deprecated, boolean required) {
+        PluginConfigSpec<URI> pcs = new PluginConfigSpec<>(
+                name, URI.class, null, deprecated, required
+        );
+        pcs.rawDefaultValue = defaultUri;
+        return pcs;
+    }
+
     public static PluginConfigSpec<Long> numSetting(final String name) {
         return new PluginConfigSpec<>(
             name, Long.class, null, false, false
@@ -141,6 +164,20 @@ public final class PluginConfigSpec<T> {
     @SuppressWarnings({"unchecked","rawtypes"})
     public static PluginConfigSpec<List<Object>> arraySetting(final String name, List<Object> defaultValue, boolean deprecated, boolean required) {
         return new PluginConfigSpec(name, List.class, defaultValue, deprecated, required);
+    }
+
+    public static PluginConfigSpec<Password> passwordSetting(final String name) {
+        return new PluginConfigSpec<>(
+                name, Password.class, null, false, false
+        );
+    }
+
+    public static PluginConfigSpec<Password> passwordSetting(final String name, final String defaultValue, boolean deprecated, boolean required) {
+        PluginConfigSpec<Password> pcs = new PluginConfigSpec<>(
+                name, Password.class, null, false, false
+        );
+        pcs.rawDefaultValue = defaultValue;
+        return pcs;
     }
 
     public Collection<PluginConfigSpec<?>> children() {
