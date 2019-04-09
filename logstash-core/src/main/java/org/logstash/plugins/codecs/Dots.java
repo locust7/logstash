@@ -7,6 +7,8 @@ import co.elastic.logstash.api.Event;
 import co.elastic.logstash.api.LogstashPlugin;
 import co.elastic.logstash.api.PluginConfigSpec;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,10 +39,8 @@ public class Dots implements Codec {
     }
 
     @Override
-    public boolean encode(Event event, ByteBuffer buffer) throws EncodeException {
-        buffer.putChar('.');
-        buffer.flip();
-        return true;
+    public void encode(Event event, OutputStream out) throws IOException {
+        out.write('.');
     }
 
     @Override
