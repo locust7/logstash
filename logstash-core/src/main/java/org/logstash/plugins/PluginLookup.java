@@ -26,6 +26,11 @@ public final class PluginLookup {
     public static PluginLookup.PluginClass lookup(final PluginLookup.PluginType type, final String name) {
         Class javaClass = PluginRegistry.getPluginClass(type, name);
         if (javaClass != null) {
+
+            if (!PluginValidator.validatePlugin(type, javaClass)) {
+                throw new IllegalStateException("Java plugin '" + name + "' is incompatible with the current Logstash plugin API");
+            }
+
             return new PluginLookup.PluginClass() {
 
                 @Override
@@ -51,6 +56,10 @@ public final class PluginLookup {
             Object resolvedClass = klass instanceof JavaClass
                     ? ((JavaClass) klass).javaClass()
                     : klass;
+
+            if (language == PluginLanguage.JAVA && !PluginValidator.validatePlugin(type, javaClass)) {
+                throw new IllegalStateException("Java plugin '" + name + "' is incompatible with the current Logstash plugin API");
+            }
 
             return new PluginLookup.PluginClass() {
                 @Override
